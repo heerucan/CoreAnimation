@@ -297,6 +297,30 @@ keyframeView.layer.add(keyframeAnimation, forKey: "keyframe")
 
 <br>
 
+# CAAnimationGroup 클래스
+
+**여러개의 애니메이션을 그룹화해서 동시적으로 동작시키기 위한 객체**
+
+즉, 여러개의 애니메이션을 적용해줄 수 있다.
+
+```swift
+class CAAnimationGroup : CAAnimation
+```
+
+`how`
+
+```swift
+let rotateAndMove = CAAnimationGroup()
+rotateAndMove.animations = [animation, starRotation]
+rotateAndMove.duration = 2
+rotateAndMove.repeatCount = .infinity
+rotateAndMove.autoreverses = true
+groupAnimationView.layer.add(rotateAndMove, forKey: "rotateAndMove")
+```
+
+<br>
+<hr>
+
 # Tutorial
 
 UIView의 색상, 크기 등의 프로퍼티를 변경하는 것은 그 아래 깔린 레이어를 바꾼 거다.
