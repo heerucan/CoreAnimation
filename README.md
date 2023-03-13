@@ -300,6 +300,11 @@ keyTimes, values 속성을 사용해 애니메이션의 중간값을 명시적�
     - **strokeColor** : Path의 색상
 - **keyTimes** - duration 동안 키프레임을 얼마나 나눌 건지에 대한 것
 - **values** - ****keyTimes로 쪼갠 Frame에 원하는 scale/color 등(각 애니메이션에 맞는 값)을 지정
+- **timingFunction**
+    - easeIn : 느리게 시작하다가 점점 빨라짐
+    - easeOut : 빠르게 시작했다가 점점 느려짐
+    - easeInEaseOut : 느린 속도로 시작했다가 중간까지는 점점 빨라지고 끝으로 갈 수록 느려짐
+    - linear : 일정한 속도로 진행
 
 ```swift
 let keyframeAnimation = CAKeyframeAnimation(keyPath: "backgroundColor")
