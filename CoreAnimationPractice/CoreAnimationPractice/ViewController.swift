@@ -46,6 +46,7 @@ final class ViewController: UIViewController {
         moveHorizontalBasicAnimation.timeOffset = 0
         moveHorizontalBasicAnimation.repeatCount = .infinity
         moveHorizontalBasicAnimation.autoreverses = true
+        moveHorizontalBasicAnimation.timingFunction = CAMediaTimingFunction(name: .easeIn)
         moveHorizontalView.layer.add(moveHorizontalBasicAnimation, forKey: "horizontal")
         
         // MARK: - 세로로 이동
@@ -55,6 +56,7 @@ final class ViewController: UIViewController {
         moveVerticalBasicAnimation.duration = 1
         moveVerticalBasicAnimation.repeatCount = .infinity
         moveVerticalBasicAnimation.autoreverses = true
+        moveVerticalBasicAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         moveVerticalView.layer.add(moveVerticalBasicAnimation, forKey: "vertical")
         
         // MARK: - 가로만 확대
@@ -138,6 +140,7 @@ final class ViewController: UIViewController {
         circleAndMoveGroup.duration = 1
         circleAndMoveGroup.repeatCount = .infinity
         circleAndMoveGroup.autoreverses = true
+        circleAndMoveGroup.timingFunction = CAMediaTimingFunction(name: .easeIn)
         circleMoveView.layer.add(circleAndMoveGroup, forKey: "circleAndMove")
         
         // MARK: - 사각형으로 이동하면서 모양 바뀌기
@@ -149,6 +152,7 @@ final class ViewController: UIViewController {
         squareAndMoveGroup.duration = 1
         squareAndMoveGroup.repeatCount = .infinity
         squareAndMoveGroup.autoreverses = true
+        squareKeyframe.timingFunction = CAMediaTimingFunction(name: .easeOut)
         squareMoveView.layer.add(squareAndMoveGroup, forKey: "squareAndMove")
         
         // MARK: - 이동하면서 회전
@@ -157,6 +161,7 @@ final class ViewController: UIViewController {
         rotateAndMoveGroup.duration = 1
         rotateAndMoveGroup.repeatCount = .infinity
         rotateAndMoveGroup.autoreverses = true
+        rotateAndMoveGroup.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         rotateAndMoveGroupView.layer.add(rotateAndMoveGroup, forKey: "rotateAndMove")
         
         // MARK: - 이동하면서 확대/축소
