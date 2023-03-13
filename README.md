@@ -285,6 +285,21 @@ CAPropertyAnimation의 하위 클래스
 (여러 Keyframe 가능인듯)**
 
 keyTimes, values 속성을 사용해 애니메이션의 중간값을 명시적으로 지정 가능
+- **keyPath** - 원하는 애니메이션의 Path를 지정
+    - **opacity** : 투명도
+    - **backgroundColor** : 배경 색상
+    - **position** : 위치
+    - **transform.scale.x** : X축으로의 크기
+    - **transform.scale.y** : Y축으로의 크기
+    - **transform.rotation** : 회전
+    - **shadowColor**: 그림자 색상
+    - **shadowOffset** : 그림자 위치
+    - **shadowOpacity** : 그림자 투명도
+    - **strokeEnd** : Path의 끝 부분
+    - **strokeStart** : Path의 시작부분
+    - **strokeColor** : Path의 색상
+- **keyTimes** - duration 동안 키프레임을 얼마나 나눌 건지에 대한 것
+- **values** - ****keyTimes로 쪼갠 Frame에 원하는 scale/color 등(각 애니메이션에 맞는 값)을 지정
 
 ```swift
 let keyframeAnimation = CAKeyframeAnimation(keyPath: "backgroundColor")
