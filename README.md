@@ -126,7 +126,74 @@ class CALayer: NSObject
     3. CAShapeLayer
 
 <br>
+
+# CAEmitterLayer 클래스,
+CAEmitterCell 클래스
+
+- `CAEmitterLayer`
+    
+    파티클 시스템을 방출하고, 애니메이션화하고 렌더링 하는 레이어
+    
+- `CAEmitterCell`
+    
+    CAEmitterLayer에 의해 방출된 한 개의 파티클
+    
+    direction과 emitted particle의 프로퍼티를 정의
+    
+    Emitter cell은 하위 셀을 가질 수 있어서 → 파티클이 파티클을 방출가능
+    
+
+```swift
+@objc private func touchupEmitterButton() {
+
+    let particleEmitter = CAEmitterLayer()
+    particleEmitter.emitterPosition = CGPoint(x: view.center.x, y: 100) // 파티클이 뿜어져나올 위치
+    particleEmitter.emitterSize = CGSize(width: view.frame.size.width, height: 2)
+    
+let cell = CAEmitterCell()
+    cell.birthRate = 10
+    cell.lifetime = 10
+    cell.lifetimeRange = 2
+    cell.velocity = 100
+    cell.velocityRange = 50
+    cell.emissionRange = .pi*2 // 2pi는 360도 모든 방향으로 방출
+    cell.spin = 3
+    cell.spinRange = 10
+    cell.scale = 0.2
+    cell.scaleRange = 0.1
+    cell.yAcceleration = 500
+    cell.contents = UIImage(named: "ruhee")?.cgImage
+    
+    particleEmitter.emitterCells = [cell]
+    view.layer.addSublayer(particleEmitter)
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        particleEmitter.birthRate = 0
+    }
+}
+```
+
+- lifetime : 셀의 수명, 초 단위로 표시
+- birthRate : 1초당 몇 개를 방출할 건지 결정
+- scale : 기본값이 1인데 0.1로 설정하면 셀의 원래 크기의 1/10
+- scaleRange : 지정된 scale 범위 내에서 랜덤으로 셀마다 크기 달라지게 할 수 있음
+- spin : 셀 회전 (0인 경우, 회전X)
+- spinRange : 지정된 spin 범위 내에 셀마다 랜덤값 제공
+- emissionRange : cell이 방출되는 각도 (기본값은 0)
+    
+    `2*.pi` 로 설정 시, 360도로 방출
+    
+- velocity : 셀의 속도 (수치가 클수록 더 빠르고 멀리 방출)
+- velocityRange : 지정된 velocity 범위 내에 셀마다 랜덤값 제공
+- yAcceleration : 가속도 벡터 y값, 음수인 경우 중력이 없는 것처럼 적용됨
+
+cell의 속성값과 layer의 속성값을 곱해서 결정
+
+참고 : [https://zeddios.tistory.com/428](https://zeddios.tistory.com/428) [https://sujinnaljin.medium.com/swift-카카오톡-송금-봉투-애니메이션-따라하기-27a86bfa59dc](https://sujinnaljin.medium.com/swift-%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-%EC%86%A1%EA%B8%88-%EB%B4%89%ED%88%AC-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EB%94%B0%EB%9D%BC%ED%95%98%EA%B8%B0-27a86bfa59dc)
+
+<br>
 <hr>
+
 
 ![스크린샷 2023-03-10 오전 11 53 20](https://user-images.githubusercontent.com/63235947/224241139-a0a37c7e-6c71-4354-b024-e5cd4c4baa70.png)
 
@@ -204,6 +271,33 @@ CABasicAnimation, CAKeyframeAnimation, CAAnimationGroup, CATransition 인스턴�
 - 2가지 메소드
     1. `run(forKey:object:arguments:)` : 애니메이션 이벤트가 발생할 때 실행할 동작 정의
     2. `shouldRemoveAction(forKey:)` : 이벤트가 끝나고 해당 이벤트를 제거할 지 여부 결정
+
+<br>
+
+# CATransition 클래스
+
+뷰나 레이어 등에서 전환효과를 적용할 수 있게 한다.
+
+뷰나 레이어 → 다른 뷰나 레이어 전환 시 애니메이션 효과 적용
+
+- type
+    1. fade : 흐려지는 효과
+    2. push : 새로운 콘텐츠가 기존 콘텐츠를 밀면서 전환
+    3. reveal : 점진적 등장
+    4. moveIn : 기존 콘텐츠 위에 새로운 콘텐츠가 덮이는 형태
+- subtype : 트랜지션 시작 위치
+    - fromBotton, fromLeft, fromRight, fromTop
+
+```swift
+@objc private func touchupNextButton() {
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = .push
+        transition.subtype = .fromBottom
+        transition.timingFunction = CAMediaTimingFunction(name: .easeIn)
+        loginLabel.layer.add(transition, forKey: "transition")
+}
+```
 
 <br>
 
@@ -337,6 +431,49 @@ rotateAndMove.repeatCount = .infinity
 rotateAndMove.autoreverses = true
 groupAnimationView.layer.add(rotateAndMove, forKey: "rotateAndMove")
 ```
+
+<br>
+
+# CATransaction 클래스
+
+여러 개의 레이어의 위치나 크기를 변경하고, 애니메이션으로 표현할 때, 해당 클래스를 통해 각각의 레이어의 속성 변경을 그룹화해 단일 트랜잭션으로 애니메이션화할 수 있다.
+
+→ 모든 레이어의 속성 변경이 동시에 발생해, 자연스럽게 애니메이션화할 수 있다.
+
+```swift
+// 트랜잭션 시작
+CATransaction.begin()
+
+// 트랜잭션 애니메이션 지속 시간 1초로 지정
+CATransaction.setAnimationDuration(1.0)
+
+// ease in, out의 타이밍 함수
+CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+
+// 트랜잭션 종료
+CATransaction.commit()
+```
+
+- 주로 사용하는 곳은
+    - 애니메이션 속도 제어
+    - 트랜잭션을 여러개 중첩해 사용
+    - 트랜잭션의 완료 블록을 설정해 트랜잭션이 완료될 때 특정 작업 수행 가능
+    - CATransaction 사용해서 pushViewController에 completion block을 넣을 수 있다.
+
+```swift
+let timingFunction = CAMediaTimingFunction(controlPoints: 0, 0.3, 0.6, 1)
+        
+CATransaction.begin()
+CATransaction.setAnimationDuration(3)
+CATransaction.setAnimationTimingFunction(timingFunction)
+
+/*
+여기에 애니메이션 로직~~~
+*/
+CATransaction.commit()
+```
+
+트랜잭션이 시작되고 작성해준 모든 애니메이션에 같은 속성(duration, timingFunction)이 적용된다.
 
 <br>
 <hr>
