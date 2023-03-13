@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  DetailViewController.swift
 //  CoreAnimationPractice
 //
 //  Created by heerucan on 2023/03/10.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class DetailViewController: UIViewController {
     
     private var moveHorizontalView = UIView()
     private var moveVerticalView = UIView()
@@ -32,8 +32,14 @@ final class ViewController: UIViewController {
         configureLayout()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let timingFunction = CAMediaTimingFunction(controlPoints: 0, 0.3, 0.6, 1)
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(3)
+        CATransaction.setAnimationTimingFunction(timingFunction)
         
         // MARK: - 가로로 이동
         let moveHorizontalBasicAnimation = CABasicAnimation(keyPath: "position.x")
@@ -102,6 +108,8 @@ final class ViewController: UIViewController {
         fadeOutAnimation.repeatCount = .infinity
         fadeOutView.layer.add(fadeOutAnimation, forKey: "fadeOut")
         
+        CATransaction.commit()
+
         // MARK: - 흔들기
         let shakeAnimation = CABasicAnimation(keyPath: "transform.translation.x")
         shakeAnimation.byValue = -5
@@ -196,9 +204,12 @@ final class ViewController: UIViewController {
         scaleFadeMoveRotateGroup.repeatCount = .infinity
         scaleFadeMoveRotateGroup.autoreverses = true
         scaleFadeMoveRotateGroupView.layer.add(scaleFadeMoveRotateGroup, forKey: "scaleMoveRotateFade")
+        
     }
     
     private func setupUI() {
+        view.backgroundColor = .white
+        
         moveHorizontalView = UIView(frame: CGRect(x: 20, y: 50, width: 50, height: 50))
         moveHorizontalView.backgroundColor = .red
         
