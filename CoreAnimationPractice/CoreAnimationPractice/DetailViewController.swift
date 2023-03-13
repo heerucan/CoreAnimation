@@ -205,6 +205,17 @@ final class DetailViewController: UIViewController {
         scaleFadeMoveRotateGroup.autoreverses = true
         scaleFadeMoveRotateGroupView.layer.add(scaleFadeMoveRotateGroup, forKey: "scaleMoveRotateFade")
         
+        makeTransition(view: moveHorizontalView)
+//        makeTransition(view: rotateView)
+    }
+    
+    private func makeTransition(view: UIView) {
+        let transition = CATransition()
+        transition.duration = 1
+        transition.timingFunction = .init(name: .easeIn)
+        transition.type = .push
+        transition.subtype = .fromTop
+        view.layer.add(transition, forKey: "transition")
     }
     
     private func setupUI() {
